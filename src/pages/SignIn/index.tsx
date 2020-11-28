@@ -1,9 +1,14 @@
 import React from 'react';
-import { Container } from './styles';
+import { Image } from 'react-native';
+import { Container, Title } from './styles';
+import logoImg from '../../assets/logo.png';
 
 const SingIn: React.FC = () => {
   return (
-    <Container />
+    <Container>
+      <Image source={logoImg} />
+      <Title> Faça seu logon </Title>
+    </Container>
   );
 }
 
