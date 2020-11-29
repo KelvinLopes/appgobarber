@@ -3,7 +3,7 @@ import { Image } from 'react-native';
 import logoImg from '../../assets/logo.png';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { Container, Title } from './styles';
+import { Container, Title, ForgotPassword, ForgotPasswordText } from './styles';
 
 const SingIn: React.FC = () => {
   return (
@@ -14,6 +14,9 @@ const SingIn: React.FC = () => {
       <Input  name="password" icon="lock" placeholder="Senha"/>
 
       <Button onPress={() => {}}>Entrar</Button>
+      <ForgotPassword>
+        <ForgotPasswordText>Esqueci minha senha</ForgotPasswordText>
+      </ForgotPassword>
     </Container>
   );
 }
