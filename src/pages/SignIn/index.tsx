@@ -38,6 +38,7 @@ const SingIn: React.FC = () => {
   const navigation = useNavigation();
   const { signIn } = useAuth();
 
+
   const handleSignIn = useCallback(
     async (data: SingInFormData) => {
       try {
@@ -72,9 +73,7 @@ const SingIn: React.FC = () => {
           'Ocorreu um erro ao fazer login, cheque as credenciais.',
         );
       }
-    },
-    [signIn],
-  );
+    }, [signIn]);
 
   return (
    <>

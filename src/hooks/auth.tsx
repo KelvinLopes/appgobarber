@@ -20,6 +20,7 @@ interface SignInCredentials {
 
 interface AuthContextData {
   userWithoutPassword: object;
+  loading: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
 }
@@ -28,9 +29,11 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>({} as AuthState);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
-      async function loaadStorageData(): Promise<void> {
+      async function loadStorageData(): Promise<void> {
         const [token, userWithoutPassword] = await AsyncStorage.multiGet([
           '@GoBarber:token',
           '@GoBarber:user',
@@ -39,11 +42,12 @@ export const AuthProvider: React.FC = ({ children }) => {
         if(token[1] && userWithoutPassword[1]) {
           setData({ 
             token: token[1], 
-            userWithoutPassword: JSON.parse(userWithoutPassword[1]) 
+            userWithoutPassword: JSON.parse(userWithoutPassword[1]),
           });
         }
+        setLoading(false);
       }
-      loaadStorageData();
+      loadStorageData();
   }, []);
 
   const signIn = useCallback(async ({ email, password }) => {
@@ -62,7 +66,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     setData({ token, userWithoutPassword });
   }, []);
 
-  const signOut = useCallback( async () => {
+  const signOut = useCallback(async () => {
     await AsyncStorage.multiRemove([
       '@GoBarber:token',
       '@GoBarber:user',
@@ -75,6 +79,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     <AuthContext.Provider
       value={{
         userWithoutPassword: data.userWithoutPassword,
+        loading,
         signIn,
         signOut,
       }}
