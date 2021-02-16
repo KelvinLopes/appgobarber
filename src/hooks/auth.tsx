@@ -10,7 +10,7 @@ import api from '../services/api';
 
 interface AuthState {
   token: string;
-  userWithoutPassword: object;
+  user: object;
 }
 
 interface SignInCredentials {
@@ -19,7 +19,7 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  userWithoutPassword: object;
+  user: object;
   loading: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
@@ -27,22 +27,22 @@ interface AuthContextData {
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-export const AuthProvider: React.FC = ({ children }) => {
+const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>({} as AuthState);
   const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
       async function loadStorageData(): Promise<void> {
-        const [token, userWithoutPassword] = await AsyncStorage.multiGet([
+        const [token, user] = await AsyncStorage.multiGet([
           '@GoBarber:token',
           '@GoBarber:user',
         ]);
 
-        if(token[1] && userWithoutPassword[1]) {
-          setData({ 
-            token: token[1], 
-            userWithoutPassword: JSON.parse(userWithoutPassword[1]),
+        if(token[1] && user[1]) {
+          setData({
+            token: token[1],
+            user: JSON.parse(user[1]),
           });
         }
         setLoading(false);
@@ -56,14 +56,14 @@ export const AuthProvider: React.FC = ({ children }) => {
       password,
     });
 
-    const { token, userWithoutPassword } = response.data;
+    const { token, user } = response.data;
 
     await AsyncStorage.multiSet([
       ['@GoBarber:token', token],
-      ['@GoBarber:user', JSON.stringify(userWithoutPassword)],
+      ['@GoBarber:user', JSON.stringify(user)],
     ]);
 
-    setData({ token, userWithoutPassword });
+    setData({ token, user });
   }, []);
 
   const signOut = useCallback(async () => {
@@ -78,7 +78,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        userWithoutPassword: data.userWithoutPassword,
+        user: data.user,
         loading,
         signIn,
         signOut,
@@ -89,7 +89,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   );
 };
 
-export function useAuth(): AuthContextData {
+function useAuth(): AuthContextData {
   const context = useContext(AuthContext);
 
   if (!context) {
@@ -98,3 +98,5 @@ export function useAuth(): AuthContextData {
 
   return context;
 }
+
+export { AuthProvider, useAuth };

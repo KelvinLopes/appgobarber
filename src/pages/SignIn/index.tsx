@@ -18,7 +18,7 @@ import getValidationsErrors from '../../utils/getValidationsErros';
 import logoImg from '../../assets/logo.png';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { 
+import {
   Container,
   Title,
   ForgotPassword,
@@ -97,8 +97,8 @@ const SingIn: React.FC = () => {
               autoCorrect={false}
               autoCapitalize="none"
               keyboardType="email-address"
-              name="email" 
-              icon="mail" 
+              name="email"
+              icon="mail"
               placeholder="E-mail"
               returnKeyType="next"
               onSubmitEditing={() => {
@@ -107,8 +107,8 @@ const SingIn: React.FC = () => {
             />
             <Input
               ref={passwordInputRef}
-              name="password" 
-              icon="lock" 
+              name="password"
+              icon="lock"
               placeholder="Senha"
               secureTextEntry
               returnKeyType="send"
