@@ -119,7 +119,7 @@ const Profile: React.FC = () => {
           'Ocorreu um erro ao atualizar seu perfil, tente novamente.',
         );
       }
-  }, [navigation]);
+  }, [navigation, updateUser]);
 
   const handleGoBack = useCallback(() => {
     navigation.goBack();
