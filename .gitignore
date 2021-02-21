@@ -65,3 +65,5 @@ buck-out/
 #Ambiente variables
 .env
 baseUrl.ts
+
+yarn-error.log
